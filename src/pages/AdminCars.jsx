@@ -10,7 +10,7 @@ import {
     DataGrid,
     GridToolbar
 } from '@mui/x-data-grid';
-import AdminNavMenu from '../components/AdminNavMenu';
+
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // TODO: import data from API

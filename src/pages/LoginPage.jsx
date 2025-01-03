@@ -1,12 +1,18 @@
-import React, {useContext} from 'react';
+import React, { useContext, useState } from 'react';
 import { TextField, Button, Box, Typography } from '@mui/material';
-import AuthContext from '../context/AuthContext'
+import AuthContext from '../context/AuthContext';
 
 const LoginPage = () => {
-  let {loginUser} = useContext(AuthContext)
+  let { loginUser } = useContext(AuthContext);
   
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  
+  const handleLogin = () => {
+    // loginUser(username, password);
+  };
+
   return (
-    <>
     <Box
       sx={{
         display: 'flex',
@@ -27,24 +33,30 @@ const LoginPage = () => {
           border: '1px solid #ccc',
           borderRadius: '8px',
           boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.1)',
-          bgcolor: 'background.paper'
+          bgcolor: 'background.paper',
         }}
       >
         <Typography variant="h6" align="center" gutterBottom>Login</Typography>
         <TextField
           id="username"
+          name="username"
           label="Nazwa użytkownika"
           variant="outlined"
           margin="normal"
           fullWidth
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
           id="password"
+          name="password"
           label="Hasło"
           type="password"
           variant="outlined"
           margin="normal"
           fullWidth
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <Button variant="contained" sx={{ mt: 2 }} fullWidth onClick={loginUser}>
           ZALOGUJ SIĘ
@@ -54,7 +66,6 @@ const LoginPage = () => {
         </Button>
       </Box>
     </Box>
-    </>
   );
 };
 

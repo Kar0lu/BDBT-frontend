@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 
-const NavMenu = () => {
+const Header = () => {
     let { user, logoutUser } = useContext(AuthContext)
 
     return (
@@ -34,7 +34,7 @@ const NavMenu = () => {
             }}>
                 {user=='admin' ? (
                     <>
-                    <Link to={'/showrooms'}><Button color="primary">Salony</Button></Link>
+                    <Link to={'/saloons'}><Button color="primary">Salony</Button></Link>
                     <Link to={'/workers'}><Button color="primary">Pracownicy</Button></Link>
                     <Link to={'/cars'}><Button color="primary">Samochody</Button></Link>
                     </>
@@ -47,4 +47,4 @@ const NavMenu = () => {
     );
 };
 
-export default NavMenu
+export default Header;

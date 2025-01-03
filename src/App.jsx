@@ -7,17 +7,18 @@ import { AuthProvider } from './context/AuthContext';
 
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
-import AdminShowrooms from './pages/AdminShowrooms'
+import AdminSaloons from './pages/AdminSaloons'
 
 import AdminCars from './pages/AdminCars';
 import AdminWorkers from './pages/AdminWorkers';
 import PrivateRoute from './utils/PrivateRoute';
-import NavMenu from './components/NavMenu';
+import Header from './sections/Header';
 
 const theme = createTheme({
   palette: {
       primary: {
           main: '#0C1820',
+          error: '#F44336'
       },
       secondary: {
           main: '#ffffff',
@@ -32,11 +33,11 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <AuthProvider>
-        <NavMenu/>
+        <Header/>
         <Routes>
           <Route path="/" element={<LandingPage/>} />
           <Route path="/login" element={<LoginPage/>} />
-          <Route path="/showrooms" element={<PrivateRoute><AdminShowrooms/></PrivateRoute>} />
+          <Route path="/saloons" element={<PrivateRoute><AdminSaloons/></PrivateRoute>} />
           <Route path="/cars" element={<AdminCars/>} /> 
           <Route path="/workers" element={<AdminWorkers/>} />
         </Routes>
