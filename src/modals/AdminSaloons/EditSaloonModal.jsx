@@ -1,35 +1,62 @@
 import React, { useState, useEffect } from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Snackbar, Alert } from '@mui/material';
 import GenericAdminModal from '../GenericAdminModal';
 
-const EditSaloonModal = ({ open, setOpen, row}) => {
+const EditSaloonModal = ({ open, setOpen, row, fetchSaloons}) => {
 
     const [formValues, setFormValues] = useState(null);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     useEffect(() => {
-        if (row) {
+        if (open) {
             setFormValues({
+                id: row.id,
                 name: row.name,
-                owner: row.owner,
-                city: row.city,
-                employees: row.employees
+                owner: row.owner
+            });
+        } else {
+            setFormValues(null);
+        }
+    }, [open]);
+    
+    const handleSave = async () => {
+        if (!formValues || !formValues.id || !formValues.name || !formValues.owner) {
+            setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
+            return;
+        }
+    
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/edit/saloon', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formValues),
+            });
+    
+            if (!response.ok) {
+                setSnackbar({
+                    open: true,
+                    message: 'Wystąpił błąd. Prosimy skontaktować się z administratorem.',
+                    severity: 'error',
+                });
+                return;
+            }
+
+            setSnackbar({ open: true, message: 'Pomyślnie zaktualizowano dane salonu!', severity: 'success' });
+            fetchSaloons();
+            handleClose();
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: 'Wystąpił nieznany błąd. Prosimy skontaktować się z administratorem.',
+                severity: 'error',
             });
         }
-    }, [row]);
-    
-    // TODO: remove after tests
-    // useEffect(() => {
-    //     console.log(formValues)
-    // }, [formValues]);
-    
-    // TODO: check if data is valid and make a fetch
-    const handleSave = () => {
-        console.log(`edit ${row.id}`)
-        setOpen(false);
     };
+
     const handleClose = () => {
         setOpen(false);
-        setFormValues(null);
     };
     
     const handleInputChange = (e) => {
@@ -40,31 +67,39 @@ const EditSaloonModal = ({ open, setOpen, row}) => {
         }));
     };
 
-    // TODO: fetch it from API if needed
-    // const options = [
-    //     {id: 1, label: 'Długa 1 Warszawa'},
-    //     {id: 2, label: 'Krótka 2 Poznań'},
-    //     {id: 3, label: 'Szeroka 3 Kraków'}
-    // ]
+    const handleSnackbarClose = (_, reason) => {
+        if (reason === 'clickaway') return;
+        setSnackbar({ ...snackbar, open: false });
+    };
 
     return (
-        <GenericAdminModal
-            title="Edytuj Salon"
-            open={open}
-            onClose={handleClose}
-            onSave={handleSave}
-        >
-            {formValues ? (<>
-                {/*
-                TODO: modify fields as needed
-                <TextField label="Label" defaultValue={formValues.value} name='name' onChange={handleInputChange} /> 
-                <TextField label="Label" defaultValue={formValues.value} slotProps={{input: {readOnly: true}}} />
-                <Autocomplete disablePortal options={options} renderInput={(params) => <TextField {...params} label="Label" />} />
-                */}
-                <TextField label="Nazwa" defaultValue={formValues.name} name='name' onChange={handleInputChange} />
-                <TextField label="Właściciel" defaultValue={formValues.owner} name='owner' onChange={handleInputChange} />
-            </>) : null}
-        </GenericAdminModal>
+        <>
+            <GenericAdminModal
+                title="Edytuj Salon"
+                open={open}
+                onClose={handleClose}
+                onSave={handleSave}
+            >
+                {formValues ? (<>
+                    <TextField label="Nazwa" defaultValue={formValues.name} name='name' onChange={handleInputChange} />
+                    <TextField label="Właściciel" defaultValue={formValues.owner} name='owner' onChange={handleInputChange} />
+                </>) : null}
+            </GenericAdminModal>
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </>
     );
 };
 
