@@ -9,10 +9,6 @@ const EditCarModal = ({ open, setOpen, row, fetchDataGridData}) => {
     const [saloonPicker, setSaloonPicker] = useState(null);
 
     useEffect(() => {
-        console.log(formValues)
-    }, [formValues]);
-
-    useEffect(() => {
         if (open) {
             setFormValues({
                 id: row.id,

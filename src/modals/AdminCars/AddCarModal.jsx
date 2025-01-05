@@ -9,10 +9,6 @@ const AddCarModal = ({ open, setOpen, fetchDataGridData}) => {
     const [saloonPicker, setSaloonPicker] = useState(null);
 
     useEffect(() => {
-        console.log(formValues)
-    }, [formValues]);
-
-    useEffect(() => {
         if (open) {
             setFormValues({
                 brand: '',
@@ -60,7 +56,6 @@ const AddCarModal = ({ open, setOpen, fetchDataGridData}) => {
             });
     
             if (!response.ok) {
-                console.log(response)
                 setSnackbar({
                     open: true,
                     message: 'Wystąpił błąd. Prosimy skontaktować się z administratorem.',

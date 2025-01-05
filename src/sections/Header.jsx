@@ -35,8 +35,10 @@ const Header = () => {
                 {user=='admin' ? (
                     <>
                     <Link to={'/saloons'}><Button color="primary">Salony</Button></Link>
-                    <Link to={'/workers'}><Button color="primary">Pracownicy</Button></Link>
                     <Link to={'/cars'}><Button color="primary">Samochody</Button></Link>
+                    <Link to={'/reservations'}><Button color="primary">Rezerwacje</Button></Link>
+                    {/* <Link to={'/workers'}><Button color="primary">Pracownicy</Button></Link> */}
+                    {/* <Link to={'/users'}><Button color="primary">Użytownicy</Button></Link> */}
                     </>
                 ) : null}
                 <Link to={'/'}><Button color='primary'>Wirtualny Salon</Button></Link>

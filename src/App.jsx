@@ -13,6 +13,7 @@ import AdminCars from './pages/AdminCars';
 import AdminWorkers from './pages/AdminWorkers';
 import PrivateRoute from './utils/PrivateRoute';
 import Header from './sections/Header';
+import AdminReservations from './pages/AdminReservations';
 
 const theme = createTheme({
   palette: {
@@ -38,8 +39,10 @@ function App() {
           <Route path="/" element={<LandingPage/>} />
           <Route path="/login" element={<LoginPage/>} />
           <Route path="/saloons" element={<PrivateRoute><AdminSaloons/></PrivateRoute>} />
-          <Route path="/cars" element={<AdminCars/>} /> 
-          <Route path="/workers" element={<AdminWorkers/>} />
+          <Route path="/cars" element={<AdminCars/>} />
+          <Route path="/reservations" element={<AdminReservations/>} /> 
+          {/* <Route path="/workers" element={<AdminWorkers/>} /> */}
+          {/* <Route path="/users" element={<AdminUsers/>} /> */}
         </Routes>
         </AuthProvider>
 

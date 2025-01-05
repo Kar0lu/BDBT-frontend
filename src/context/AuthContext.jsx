@@ -7,7 +7,8 @@ export default AuthContext;
 
 export const AuthProvider = ({children}) => {
 
-    let [user, setUser] = useState(null)
+    // TODO: reset after tests
+    let [user, setUser] = useState('admin')
     let [authTokens, setAuthTokens] = useState(null)
 
     const navigate = useNavigate()
