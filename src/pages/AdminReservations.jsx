@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, useTheme, Snackbar, Alert } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
-import AddReservationModal from '../modals/AdminReservations/AddReservationModal';
+// import AddReservationModal from '../modals/AdminReservations/AddReservationModal';
 import EditReservationModal from '../modals/AdminReservations/EditReservationModal';
 import DataGridButton from '../components/DataGridButton';
-import dayjs from 'dayjs';
 
 const AdminReservations = () => {
     const theme = useTheme();
@@ -36,13 +35,13 @@ const AdminReservations = () => {
         { field: 'car_name', headerName: 'Samochód', width: 200 },
         { field: 'worker_name', headerName: 'Pracownik', width: 150 },
         { field: 'customer_name', headerName: 'Użytkownik', width: 150 },
-        // {
-        //     field: 'info',
-        //     headerName: 'Edytuj informacje',
-        //     width: 200,
-        //     headerAlign: 'center',
-        //     renderCell: (params) => <DataGridButton onClick={handleEditModalOpen} params={params}/>
-        // }
+        {
+            field: 'info',
+            headerName: 'Edytuj informacje',
+            width: 200,
+            headerAlign: 'center',
+            renderCell: (params) => <DataGridButton onClick={handleEditModalOpen} params={params}/>
+        }
     ];
 
     const fetchDataGridData = () => {
@@ -61,7 +60,6 @@ const AdminReservations = () => {
                     customer: reservation.customer,
                     customer_name: reservation.customer_name,
                 }));
-                console.log(transformedData)
                 setRows(transformedData);
                 setLoading(false);
             })
@@ -164,7 +162,7 @@ const AdminReservations = () => {
             />
             
             {/* <AddReservationModal open={addModalOpen} setOpen={setAddModalOpen} fetchDataGridData={fetchDataGridData}/> */}
-            {/* <EditReservationModal open={editModalOpen} setOpen={setEditModalOpen} fetchDataGridData={fetchDataGridData} row={activeRow} /> */}
+            <EditReservationModal open={editModalOpen} setOpen={setEditModalOpen} fetchDataGridData={fetchDataGridData} row={activeRow} />
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={3000}

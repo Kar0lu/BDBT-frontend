@@ -8,10 +8,6 @@ const EditUserModal = ({ open, setOpen, row, fetchDataGridData}) => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     useEffect(() => {
-        console.log(formValues)
-    }, [formValues]);
-
-    useEffect(() => {
         if (open) {
             setFormValues({
                 id: row.id,

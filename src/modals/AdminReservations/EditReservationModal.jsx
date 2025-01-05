@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Snackbar, Alert } from '@mui/material';
+import { TextField, Snackbar, Alert, Autocomplete } from '@mui/material';
 import GenericAdminModal from '../GenericAdminModal';
 
 const EditReservationModal = ({ open, setOpen, row, fetchDataGridData}) => {
 
     const [formValues, setFormValues] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-
+    const [workerPicker, setWorkerPicker] = useState(null);
+    
     useEffect(() => {
         if (open) {
-            // setFormValues({
-            //     id: row.id,
-            //     name: row.name,
-            //     owner: row.owner
-            // });
+            setFormValues({
+                id: row.id,
+                worker: row.worker
+            });
+
+            fetch('http://127.0.0.1:8000/api/get/workerpicker')
+                .then((response) => response.json())
+                .then((data) => {
+                    const transformedData = data.map((reservation) => ({
+                        id: reservation.id,
+                        label: reservation.name + ' ' + reservation.lastname
+                    }));
+                    setWorkerPicker(transformedData);
+                })
+                .catch((error) => {
+                    setSnackbar({
+                        open: true,
+                        message: 'Wystąpił nieznany błąd przy ładowaniu danych. Prosimy skontaktować się z administratorem.',
+                        severity: 'error',
+                    });
+                });
         } else {
             setFormValues(null);
+            setWorkerPicker(null);
         }
     }, [open]);
     
@@ -80,10 +98,27 @@ const EditReservationModal = ({ open, setOpen, row, fetchDataGridData}) => {
                 onClose={handleClose}
                 onSave={handleSave}
             >
-                {/* {formValues ? (<>
-                    <TextField label="Nazwa" defaultValue={formValues.name} name='name' onChange={handleInputChange} />
-                    <TextField label="Właściciel" defaultValue={formValues.owner} name='owner' onChange={handleInputChange} />
-                </>) : null} */}
+                {formValues && workerPicker ? (<>
+                    <Autocomplete
+                        disablePortal
+                        options={workerPicker}
+                        value={workerPicker.find(worker => worker.id === formValues?.worker) || null}
+                        onChange={(event, newValue) => {
+                            if (newValue) {
+                                setFormValues((prevValues) => ({
+                                    ...prevValues,
+                                    worker: newValue.id
+                                }));
+                            } else {
+                                setFormValues((prevValues) => ({
+                                    ...prevValues,
+                                    worker: null,
+                                }));
+                            }
+                        }}
+                        renderInput={(params) => <TextField {...params} label="Pracownik" />}
+                    />
+                </>) : null}
             </GenericAdminModal>
             <Snackbar
                 open={snackbar.open}

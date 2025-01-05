@@ -16,10 +16,6 @@ const CardSection = ({ cars }) => {
     const [selectedCar, setSelectedCar] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
 
-    // useEffect(() => {
-    //     console.log(cars)
-    // }, [cars]);
-
     const handleModalOpen = (car) => {
         setSelectedCar(car);
         setModalOpen(true); // Open modal when a car is selected

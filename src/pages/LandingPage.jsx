@@ -1,14 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, { useRef } from 'react';
 import {
     Box
 } from '@mui/material';
 
 import WelcomeSection from '../sections/WelcomeSection';
 import SearchSection from '../sections/SearchSection';
-import CardSection from '../sections/CardSection';
 import Footer from '../sections/Footer';
-
-import CarModal from '../modals/CarModal';
 
 const LandingPage = () => {
 
