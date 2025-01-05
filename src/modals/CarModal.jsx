@@ -89,7 +89,7 @@ const CarModal = ({ car, modalOpen, handleModalClose }) => {
                         >
                             <li>Marka: {car.brand}</li>
                             <li>Model: {car.model}</li>
-                            <li>Cena: {car.price} zł</li>
+                            <li>Cena: {car.price}zł</li>
                             <li>Salon: {car.saloon_name} ({car.saloon_city})</li>
                             <li>Ilość egzemplarzy: {car.number_of_units}</li>
                             <li>Dostępność: {car.availability ? "Dostępny" : "Niedostępny"}</li>

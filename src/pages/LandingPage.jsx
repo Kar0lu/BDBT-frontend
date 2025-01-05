@@ -11,9 +11,6 @@ import Footer from '../sections/Footer';
 import CarModal from '../modals/CarModal';
 
 const LandingPage = () => {
-    const [modalOpen, setModalOpen] = useState(false);
-    const handleModalOpen = () => setModalOpen(true);
-    const handleModalClose = () => setModalOpen(false);
 
     const searchRef = useRef(null);
     const contactRef = useRef(null);
@@ -22,7 +19,6 @@ const LandingPage = () => {
 
     return (
         <Box>
-            <CarModal modalOpen={modalOpen} handleModalClose={handleModalClose}/>
             <WelcomeSection
                 scrollToSearch={scrollToSearch}
                 scrollToContact={scrollToContact}
