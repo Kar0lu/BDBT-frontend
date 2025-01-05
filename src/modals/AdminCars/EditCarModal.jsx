@@ -8,6 +8,7 @@ const EditCarModal = ({ open, setOpen, row, fetchDataGridData}) => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [saloonPicker, setSaloonPicker] = useState(null);
 
+
     useEffect(() => {
         if (open) {
             setFormValues({
@@ -15,6 +16,7 @@ const EditCarModal = ({ open, setOpen, row, fetchDataGridData}) => {
                 price: row.price,
                 availability: row.availability,
                 saloon: row.saloon,
+                description: row.description,
             });
 
             fetch('http://127.0.0.1:8000/api/get/saloonpicker')
@@ -138,6 +140,7 @@ const EditCarModal = ({ open, setOpen, row, fetchDataGridData}) => {
                         }}
                         renderInput={(params) => <TextField {...params} label="Salon" />}
                     />
+                    <TextField label="Opis" defaultValue={formValues.description} name='description' onChange={handleInputChange} multiline maxRows={4} />
                 </>) : null}
             </GenericAdminModal>
             <Snackbar

@@ -28,7 +28,6 @@ const LandingPage = () => {
                 scrollToContact={scrollToContact}
             />
             <SearchSection searchRef={searchRef}/>
-            <CardSection handleModalOpen={handleModalOpen}/>
             <Footer contactRef={contactRef}/>
         </Box>
     );

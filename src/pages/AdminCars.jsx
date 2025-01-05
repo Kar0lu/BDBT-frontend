@@ -55,7 +55,8 @@ const AdminCars = () => {
                     saloon: car.saloon,
                     saloon_name: car.saloon_name,
                     saloon_city: car.saloon_city,
-                    number_of_units: car.number_of_units
+                    number_of_units: car.number_of_units,
+                    description: car.description,
                 }));
                 setRows(transformedData);
                 setLoading(false);

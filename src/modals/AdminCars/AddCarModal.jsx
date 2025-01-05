@@ -16,6 +16,7 @@ const AddCarModal = ({ open, setOpen, fetchDataGridData}) => {
                 price: '',
                 availability: false,
                 saloon: null,
+                description: '',
             });
 
             fetch('http://127.0.0.1:8000/api/get/saloonpicker')
@@ -120,6 +121,7 @@ const AddCarModal = ({ open, setOpen, fetchDataGridData}) => {
                         }
                         label="Dostępność"
                     />
+                    <TextField label="Opis" defaultValue={formValues.description} name='description' onChange={handleInputChange} multiline maxRows={4}/>
                 </>) : null}
                 {formValues && saloonPicker ? (<>
                     <Autocomplete
