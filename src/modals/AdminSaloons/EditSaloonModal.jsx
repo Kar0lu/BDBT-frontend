@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Snackbar, Alert } from '@mui/material';
 import GenericAdminModal from '../GenericAdminModal';
 
-const EditSaloonModal = ({ open, setOpen, row, fetchSaloons}) => {
+const EditSaloonModal = ({ open, setOpen, row, fetchDataGridData}) => {
 
     const [formValues, setFormValues] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
@@ -44,7 +44,7 @@ const EditSaloonModal = ({ open, setOpen, row, fetchSaloons}) => {
             }
 
             setSnackbar({ open: true, message: 'Pomyślnie zaktualizowano dane salonu!', severity: 'success' });
-            fetchSaloons();
+            fetchDataGridData();
             handleClose();
         } catch (error) {
             setSnackbar({

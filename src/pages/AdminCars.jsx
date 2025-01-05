@@ -1,302 +1,180 @@
-import React, { useState } from 'react';
-import {
-    Box,
-    Button,
-    Modal,
-    TextField,
-    Typography,
-} from '@mui/material';
-import {
-    DataGrid,
-    GridToolbar
-} from '@mui/x-data-grid';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, useTheme, Snackbar, Alert } from '@mui/material';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
-// TODO: import data from API
-const rows = [
-    { id: 3, model: 'Ford Mustang GT', marka: 'Ford', salon: 'Warszawa', stan: 'Wolny', cena: 250000 },
-    { id: 4, model: 'Toyota Corolla', marka: 'Toyota', salon: 'Poznań', stan: 'Wolny', cena: 85000 },
-    { id: 5, model: 'BMW X5', marka: 'BMW', salon: 'Kraków', stan: 'Wolny', cena: 310000 },
-];
+import AddCarModal from '../modals/AdminCars/AddCarModal';
+import EditCarModal from '../modals/AdminCars/EditCarModal';
+import DataGridButton from '../components/DataGridButton';
 
 const AdminCars = () => {
+    const theme = useTheme();
+
     const [selectedRows, setSelectedRows] = useState([]);
-
-    const [formValues, setFormValues] = useState({
-        model: '',
-        marka: '',
-        salon: '',
-        stan: '',
-        cena: '',
-    });
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormValues((prevValues) => ({
-            ...prevValues,
-            [name]: value,
-        }));
-    };
-
-    const [openEditModal, setOpenEditModal] = useState(false);
-    const [selectedRow, setSelectedRow] = useState(null);
-
-    const handleOpenEditModal = (row) => {
-        setOpenEditModal(true);
-        setSelectedRow(row);
-    };
-    // TODO: clear formValues
-    const handleCloseEditModal = () => {
-        setOpenEditModal(false);
-        setSelectedRow(null);
-    };
-    // TODO: make API call to set new owner
-    const handleSaveEditModal = () => {
-        console.log({formValues})
-    };
-
-    const [openCreateModal, setOpenCreateModal] = useState(false);
-
-    const handleOpenCreateModal = () => {
-        setOpenCreateModal(true);
-    };
-    const handleCloseCreateModal = () => {
-        setOpenCreateModal(false);
-    };
-    // TODO: make API call to create new saloon
-    const handleSaveCreateModal = () => {
-        console.log({formValues})
-    };
-    
+    const [activeRow, setActiveRow] = useState(null);
+    const [rows, setRows] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     const columns = [
+        { field: 'brand', headerName: 'Marka', width: 200 },
         { field: 'model', headerName: 'Model', width: 200 },
-        { field: 'marka', headerName: 'Marka', width: 100 },
-        { field: 'salon', headerName: 'Salon', width: 100 },
-        { field: 'stan', headerName: 'Stan', width: 100 },
-        { field: 'cena', headerName: 'Cena', width: 100 },
+        { field: 'price', headerName: 'Cena', width: 150 },
+        { 
+            field: 'availability',
+            headerName: 'Dostępność',
+            width: 150,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => (params.value ? <CheckIcon /> : <CloseIcon />)
+        },
+        { field: 'saloon_name', headerName: 'Nazwa salonu', width: 150 },
+        { field: 'saloon_city', headerName: 'Miasto', width: 150 },
+        { field: 'number_of_units', headerName: 'Liczba egzemplarzy', width: 150 },
         {
             field: 'info',
             headerName: 'Edytuj informacje',
-            width: 150,
+            width: 200,
             headerAlign: 'center',
-            renderCell: (params) => (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        height: '100%',
-                        width: '100%',
-                    }}
-                >
-                    <Button
-                        variant="contained"
-                        onClick={() => handleOpenEditModal(params.row)}
-                        sx={{
-                            minWidth: 0,
-                            width: 40,
-                            height: 40,
-                            borderRadius: '50%',
-                        }}
-                    >
-                        <InfoOutlinedIcon/>
-                    </Button>
-                </Box>
-            ),
+            renderCell: (params) => <DataGridButton onClick={handleEditModalOpen} params={params}/>
         }
     ];
 
+    const fetchDataGridData = () => {
+        setLoading(true);
+        fetch('http://127.0.0.1:8000/api/get/cars')
+            .then((response) => response.json())
+            .then((data) => {
+                const transformedData = data.map((car) => ({
+                    id: car.id,
+                    brand: car.brand,
+                    model: car.model,
+                    price: car.price,
+                    availability: car.availability,
+                    saloon: car.saloon,
+                    saloon_name: car.saloon_name,
+                    saloon_city: car.saloon_city,
+                    number_of_units: car.number_of_units
+                }));
+                setRows(transformedData);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setSnackbar({
+                    open: true,
+                    message: 'Wystąpił nieznany błąd przy ładowaniu danych. Prosimy skontaktować się z administratorem.',
+                    severity: 'error',
+                });
+                setLoading(false);
+            });
+    }
+
+    useEffect(() => {
+        fetchDataGridData();
+    }, []);
+
+    const handleRemoveSelectedButton = async () => {  
+        if (selectedRows.length === 0) {
+            setSnackbar({ open: true, message: 'Nie zaznaczono żadnego salonu', severity: 'warning' });
+            return;
+        }
+
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/delete/car', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(selectedRows),
+            });
+    
+            if (!response.ok) {
+                setSnackbar({
+                    open: true,
+                    message: 'Wystąpił błąd. Prosimy skontaktować się z administratorem.',
+                    severity: 'error',
+                });
+                return;
+            }
+
+            setSnackbar({ open: true, message: 'Pomyślnie usunięto samochód!', severity: 'success' });
+            fetchDataGridData();
+        } catch (error) {
+            setSnackbar({
+                open: true,
+                message: 'Wystąpił nieznany błąd. Prosimy skontaktować się z administratorem.',
+                severity: 'error',
+            });
+        }
+    }
+
+    const [addModalOpen, setAddModalOpen] = useState(false);
+    const handleAddModalOpen = () => {
+        setAddModalOpen(true);
+    };
+
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const handleEditModalOpen = (row) => {
+        setEditModalOpen(true);
+        setActiveRow(row);
+    };
+
+    const handleSnackbarClose = (_, reason) => {
+        if (reason === 'clickaway') return;
+        setSnackbar({ ...snackbar, open: false });
+    };
+
     return (
-        <>
-            <Box
-                sx={{
-                    p: 4,
-                    display: 'flex',
-                    gap: 2,
-                }}
-            >
+        <Box sx={{ p: 4 }}>   
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                 <Button
                     variant="contained"
-                    onClick={() => handleOpenCreateModal()}
+                    onClick={handleAddModalOpen}
                 >
                     Dodaj samochód
                 </Button>
-                {/* TODO: make API call to remove selectedRows */}
                 <Button
                     variant="contained"
-                    onClick={() => console.log(selectedRows)}
+                    onClick={handleRemoveSelectedButton}
                     sx={{
-                        background:"#F44336"
+                        background: theme.palette.primary.error
                     }}
                 >
                     Usuń zaznaczone samochody
                 </Button>
             </Box>
-            <Box
-                sx={{
-                    px: 4,
+            
+            <DataGrid
+                rows={rows}
+                columns={columns}
+                checkboxSelection
+                disableRowSelectionOnClick
+                slots={{
+                    toolbar: GridToolbar,
                 }}
+                onRowSelectionModelChange={(newSelection) => {
+                    setSelectedRows(newSelection);
+                }}
+            />
+            
+            <AddCarModal open={addModalOpen} setOpen={setAddModalOpen} fetchDataGridData={fetchDataGridData}/>
+            <EditCarModal open={editModalOpen} setOpen={setEditModalOpen} fetchDataGridData={fetchDataGridData} row={activeRow} />
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    checkboxSelection
-                    disableRowSelectionOnClick
-                    slots={{
-                        toolbar: GridToolbar,
-                    }}
-                    onRowSelectionModelChange={(newSelection) => {
-                        setSelectedRows(newSelection);
-                    }}
-                />
-            </Box>
-
-            <Modal
-                open={openEditModal}
-                onClose={handleCloseEditModal}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-            >
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: 400,
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                    }}
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
                 >
-                    <Typography id="modal-title" variant="h6" component="h2" sx={{mb:2}}>
-                        Informacje o samochodzie
-                    </Typography>
-                    <Box
-                        sx={{display:'flex', flexDirection:'column', gap:2}}
-                    >
-                    {selectedRow && 
-                    <>
-                        <TextField
-                            label="Model"
-                            defaultValue={selectedRow.model}
-                            slotProps={{
-                                input: {
-                                readOnly: true,
-                                },
-                            }}
-                        />
-                        <TextField
-                            label="Marka"
-                            value={selectedRow.marka}
-                            slotProps={{
-                                input: {
-                                readOnly: true,
-                                },
-                            }}
-                        />
-                        <TextField
-                            label="Salon"
-                            name='salon'
-                            defaultValue={selectedRow.salon}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            label="Stan"
-                            name='stan'
-                            defaultValue={selectedRow.stan}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            type='number'
-                            label="Cena"
-                            name='cena'
-                            defaultValue={selectedRow.cena}
-                            onChange={handleInputChange}
-                        />
-                    </>}
-                    </Box>
-                    <Box sx={{ mt: 2, display: 'flex', gap: 2}}>
-                        <Button onClick={handleSaveEditModal} variant='contained'>
-                            Zapisz
-                        </Button>
-                        <Button onClick={handleCloseEditModal} variant="outlined">
-                            Zamknij
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-
-            <Modal
-                open={openCreateModal}
-                onClose={handleCloseCreateModal}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
-            >
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        width: 400,
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                    }}
-                >
-                    <Typography id="modal-title" variant="h6" component="h2" sx={{mb:2}}>
-                        Informacje o samochodzie
-                    </Typography>
-                    <Box
-                        sx={{display:'flex', flexDirection:'column', gap:2}}
-                    >
-                        <TextField
-                            label="Model"
-                            name='model'
-                            defaultValue={formValues.model}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            label="Marka"
-                            name='marka'
-                            defaultValue={formValues.marka}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            label="Salon"
-                            name='salon'
-                            defaultValue={formValues.salon}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            label="Stan"
-                            name='stan'
-                            defaultValue={formValues.stan}
-                            onChange={handleInputChange}
-                        />
-                        <TextField
-                            type='number'
-                            label="Cena"
-                            name='cena'
-                            defaultValue={formValues.cena}
-                            onChange={handleInputChange}
-                        />
-                    </Box>
-                    <Box sx={{ mt: 2, display: 'flex', gap: 2}}>
-                        <Button onClick={handleSaveCreateModal} variant='contained'>
-                            Zapisz
-                        </Button>
-                        <Button onClick={handleCloseCreateModal} variant="outlined">
-                            Zamknij
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-        </>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </Box>
     );
 };
 

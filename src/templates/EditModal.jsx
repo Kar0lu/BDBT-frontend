@@ -2,34 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Snackbar, Alert } from '@mui/material';
 import GenericAdminModal from '../GenericAdminModal';
 
-const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
+// const EditSaloonModal = ({ open, setOpen, row, fetchDataGridData}) => {
 
     const [formValues, setFormValues] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     useEffect(() => {
         if (open) {
-            setFormValues({
-                name: '',
-                owner: '',
-                city: '',
-                building_number: '',
-                street: '',
-            });
+            // setFormValues({
+            //     id: row.id,
+            //     name: row.name,
+            //     owner: row.owner
+            // });
         } else {
             setFormValues(null);
         }
     }, [open]);
-
+    
     const handleSave = async () => {
-        if (formValues.name == '') {
-            setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
-            return;
-        }
+        // if (!formValues || !formValues.id || !formValues.name || !formValues.owner) {
+        //     setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
+        //     return;
+        // }
     
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/create/saloon', {
-                method: 'POST',
+            // const response = await fetch('http://127.0.0.1:8000/api/edit/saloon', {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -45,8 +43,8 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
                 return;
             }
 
-            setSnackbar({ open: true, message: 'Pomyślnie dodano nowy salon!', severity: 'success' });
-            fetchSaloons();
+            // setSnackbar({ open: true, message: 'Pomyślnie zaktualizowano dane salonu!', severity: 'success' });
+            fetchDataGridData();
             handleClose();
         } catch (error) {
             setSnackbar({
@@ -60,7 +58,7 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
     const handleClose = () => {
         setOpen(false);
     };
-
+    
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValues((prevValues) => ({
@@ -77,18 +75,15 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
     return (
         <>
             <GenericAdminModal
-                title="Dodaj Salon"
+                // title="Edytuj Salon"
                 open={open}
                 onClose={handleClose}
                 onSave={handleSave}
             >
-                {formValues ? (<>
-                <TextField label="Nazwa" defaultValue={formValues.name} name='name' onChange={handleInputChange} />
-                <TextField label="Właściciel" defaultValue={formValues.owner} name='owner' onChange={handleInputChange} />
-                <TextField label="Miasto" defaultValue={formValues.city} name='city' onChange={handleInputChange} />
-                <TextField label="Ulica" defaultValue={formValues.street} name='street' onChange={handleInputChange} />
-                <TextField label="Numer budynku" defaultValue={formValues.building_number} name='building_number' onChange={handleInputChange} />
-                </>) : null}
+                {/* {formValues ? (<>
+                    <TextField label="Nazwa" defaultValue={formValues.name} name='name' onChange={handleInputChange} />
+                    <TextField label="Właściciel" defaultValue={formValues.owner} name='owner' onChange={handleInputChange} />
+                </>) : null} */}
             </GenericAdminModal>
             <Snackbar
                 open={snackbar.open}
@@ -108,4 +103,4 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
     );
 };
 
-export default AddSaloonModal;
+// export default EditSaloonModal;

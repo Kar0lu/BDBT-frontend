@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, useTheme, Snackbar, Alert } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
-import AddSaloonModal from '../modals/AdminSaloons/AddSaloonModal';
-import EditSaloonModal from '../modals/AdminSaloons/EditSaloonModal';
+// import AddSaloonModal from '../modals/AdminSaloons/AddSaloonModal';
+// import EditSaloonModal from '../modals/AdminSaloons/EditSaloonModal';
 import DataGridButton from '../components/DataGridButton';
 
-const AdminSaloons = () => {
+// const AdminSaloons = () => {
     const theme = useTheme();
 
     const [selectedRows, setSelectedRows] = useState([]);
@@ -16,10 +16,10 @@ const AdminSaloons = () => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     const columns = [
-        { field: 'name', headerName: 'Nazwa', width: 200 },
-        { field: 'owner', headerName: 'Właściciel', width: 200 },
-        { field: 'city', headerName: 'Miejscowość', width: 150 },
-        { field: 'employees', headerName: 'Liczba pracowników', width: 150 },
+        // { field: 'name', headerName: 'Nazwa', width: 200 },
+        // { field: 'owner', headerName: 'Właściciel', width: 200 },
+        // { field: 'city', headerName: 'Miejscowość', width: 150 },
+        // { field: 'employees', headerName: 'Liczba pracowników', width: 150 },
         {
             field: 'info',
             headerName: 'Edytuj informacje',
@@ -31,16 +31,16 @@ const AdminSaloons = () => {
 
     const fetchDataGridData = () => {
         setLoading(true);
-        fetch('http://127.0.0.1:8000/api/get/saloons')
+        // fetch('http://127.0.0.1:8000/api/get/saloons')
             .then((response) => response.json())
             .then((data) => {
-                const transformedData = data.map((saloon) => ({
-                    id: saloon.id,
-                    name: saloon.name,
-                    owner: saloon.owner,
-                    city: saloon.city,
-                    employees: saloon.employees.toString()
-                }));
+                // const transformedData = data.map((saloon) => ({
+                //     id: saloon.id,
+                //     name: saloon.name,
+                //     owner: saloon.owner,
+                //     city: saloon.city,
+                //     employees: saloon.employees.toString()
+                // }));
                 setRows(transformedData);
                 setLoading(false);
             })
@@ -58,17 +58,6 @@ const AdminSaloons = () => {
         fetchDataGridData();
     }, []);
 
-    const [addModalOpen, setAddModalOpen] = useState(false);
-    const handleAddModalOpen = () => {
-        setAddModalOpen(true);
-    };
-
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const handleEditModalOpen = (row) => {
-        setEditModalOpen(true);
-        setActiveRow(row);
-    };
-
     const handleRemoveSelectedButton = async () => {  
         if (selectedRows.length === 0) {
             setSnackbar({ open: true, message: 'Nie zaznaczono żadnego salonu', severity: 'warning' });
@@ -76,7 +65,7 @@ const AdminSaloons = () => {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8000/api/delete/saloon', {
+            // const response = await fetch('http://127.0.0.1:8000/api/delete/saloon', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +82,7 @@ const AdminSaloons = () => {
                 return;
             }
 
-            setSnackbar({ open: true, message: 'Pomyślnie usunięto salony!', severity: 'success' });
+            // setSnackbar({ open: true, message: 'Pomyślnie usunięto salony!', severity: 'success' });
             fetchDataGridData();
         } catch (error) {
             setSnackbar({
@@ -103,6 +92,17 @@ const AdminSaloons = () => {
             });
         }
     }
+
+    const [addModalOpen, setAddModalOpen] = useState(false);
+    const handleAddModalOpen = () => {
+        setAddModalOpen(true);
+    };
+
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const handleEditModalOpen = (row) => {
+        setEditModalOpen(true);
+        setActiveRow(row);
+    };
 
     const handleSnackbarClose = (_, reason) => {
         if (reason === 'clickaway') return;
@@ -116,7 +116,7 @@ const AdminSaloons = () => {
                     variant="contained"
                     onClick={handleAddModalOpen}
                 >
-                    Dodaj salon
+                    {/* Dodaj salon */}
                 </Button>
                 <Button
                     variant="contained"
@@ -125,7 +125,7 @@ const AdminSaloons = () => {
                         background: theme.palette.primary.error
                     }}
                 >
-                    Usuń zaznaczone salony
+                    {/* Usuń zaznaczone salony */}
                 </Button>
             </Box>
             
@@ -142,8 +142,8 @@ const AdminSaloons = () => {
                 }}
             />
             
-            <AddSaloonModal open={addModalOpen} setOpen={setAddModalOpen} fetchDataGridData={fetchDataGridData}/>
-            <EditSaloonModal open={editModalOpen} setOpen={setEditModalOpen} fetchDataGridData={fetchDataGridData} row={activeRow} />
+            {/* <AddSaloonModal open={addModalOpen} setOpen={setAddModalOpen} fetchDataGridData={fetchDataGridData}/> */}
+            {/* <EditSaloonModal open={editModalOpen} setOpen={setEditModalOpen} fetchDataGridData={fetchDataGridData} row={activeRow} /> */}
             <Snackbar
                 open={snackbar.open}
                 autoHideDuration={3000}
@@ -162,4 +162,4 @@ const AdminSaloons = () => {
     );
 };
 
-export default AdminSaloons;
+// export default AdminSaloons;
