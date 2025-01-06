@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+import { TextField, Button, Box, Typography, Tooltip } from '@mui/material';
 import AuthContext from '../context/AuthContext';
 
 const LoginPage = () => {
@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   
   const handleLogin = () => {
-    // loginUser(username, password);
+    loginUser(username, password);
   };
 
   return (
@@ -38,8 +38,6 @@ const LoginPage = () => {
       >
         <Typography variant="h6" align="center" gutterBottom>Login</Typography>
         <TextField
-          id="username"
-          name="username"
           label="Nazwa użytkownika"
           variant="outlined"
           margin="normal"
@@ -48,8 +46,6 @@ const LoginPage = () => {
           onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
-          id="password"
-          name="password"
           label="Hasło"
           type="password"
           variant="outlined"
@@ -58,12 +54,14 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button variant="contained" sx={{ mt: 2 }} fullWidth onClick={loginUser}>
+        <Button variant="contained" sx={{ mt: 2 }} fullWidth onClick={handleLogin}>
           ZALOGUJ SIĘ
         </Button>
-        <Button variant="text" sx={{ mt: 1 }} fullWidth>
-          SKĄD WZIĄĆ HASŁO?
-        </Button>
+        <Tooltip title="Należy skontaktować się z administratorem">
+          <Button variant="text" sx={{ mt: 1 }} fullWidth>
+            SKĄD WZIĄĆ HASŁO?
+          </Button>
+        </Tooltip>
       </Box>
     </Box>
   );

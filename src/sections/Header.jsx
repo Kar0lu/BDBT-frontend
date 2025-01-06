@@ -37,7 +37,7 @@ const Header = () => {
                     <Link to={'/adminsaloons'}><Button color="primary">Salony</Button></Link>
                     <Link to={'/admincars'}><Button color="primary">Samochody</Button></Link>
                     <Link to={'/adminreservations'}><Button color="primary">Rezerwacje</Button></Link>
-                    <Link to={'/adminusers'}><Button color="primary">Użytownicy</Button></Link>
+                    <Link to={'/adminusers'}><Button color="primary">Użytkownicy</Button></Link>
                     <Link><Button color="primary" disabled>Pracownicy</Button></Link>
                     </>
                 ) : null}

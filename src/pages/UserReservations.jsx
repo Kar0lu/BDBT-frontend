@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Box, Button, useTheme, Snackbar, Alert } from '@mui/material';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
-import DataGridButton from '../components/DataGridButton';
+// import DataGridButton from '../components/DataGridButton';
+
+import AuthContext from '../context/AuthContext';
 
 const UserReservations = () => {
     const theme = useTheme();
@@ -12,6 +14,7 @@ const UserReservations = () => {
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(true);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    let { user_id } = useContext(AuthContext);
 
     const columns = [
         { field: 'saloon_name', headerName: 'Nazwa salonu', width: 150 },
@@ -43,7 +46,7 @@ const UserReservations = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ user_id: '1'}),
+            body: JSON.stringify({ user_id: user_id}),
         })
             .then((response) => response.json())
             .then((data) => {

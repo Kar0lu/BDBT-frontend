@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { TextField, Snackbar, Alert, Autocomplete } from '@mui/material';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,11 +8,14 @@ import dayjs from 'dayjs';
 
 import GenericAdminModal from '../GenericAdminModal';
 
+import AuthContext from '../../context/AuthContext';
+
 const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
 
     const [formValues, setFormValues] = useState(null);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [workerPicker, setWorkerPicker] = useState(null);
+    let { user_id } = useContext(AuthContext);
     
     useEffect(() => {
         console.log(formValues)
@@ -24,7 +27,7 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
                 date: null,
                 car: car.id,
                 worker: null,
-                user: 1,
+                user: user_id,
             });
 
         } else {
@@ -111,7 +114,6 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
                 <Alert
                     onClose={handleSnackbarClose}
                     severity={snackbar.severity}
-                    sx={{ width: '100%' }}
                 >
                     {snackbar.message}
                 </Alert>

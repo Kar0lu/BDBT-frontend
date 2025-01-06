@@ -1,9 +1,11 @@
 import './App.css'
 import React, { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext';
 
+import AdminRoute from './utils/AdminRoute';
+import UserRoute from './utils/UserRoute';
 
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
@@ -11,7 +13,6 @@ import AdminSaloons from './pages/AdminSaloons'
 
 import AdminCars from './pages/AdminCars';
 // import AdminWorkers from './pages/AdminWorkers';
-import PrivateRoute from './utils/PrivateRoute';
 import Header from './sections/Header';
 import AdminReservations from './pages/AdminReservations';
 import AdminUsers from './pages/AdminUsers';
@@ -40,12 +41,15 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage/>} />
           <Route path="/login" element={<LoginPage/>} />
-          <Route path="/adminsaloons" element={<PrivateRoute><AdminSaloons/></PrivateRoute>} />
-          <Route path="/admincars" element={<AdminCars/>} />
-          <Route path="/adminreservations" element={<AdminReservations/>} /> 
-          <Route path="/reservations" element={<UserReservations/>} />
-          <Route path="/adminusers" element={<AdminUsers/>} />
+          
+          <Route path="/adminsaloons" element={<AdminRoute><AdminSaloons/></AdminRoute>} />
+          <Route path="/admincars" element={<AdminRoute><AdminCars/></AdminRoute>} />
+          <Route path="/adminreservations" element={<AdminRoute><AdminReservations/></AdminRoute>} /> 
+          <Route path="/adminusers" element={<AdminRoute><AdminUsers/></AdminRoute>} />
+
+          <Route path="/reservations" element={<UserRoute><UserReservations/></UserRoute>} />
           {/* <Route path="/workers" element={<AdminWorkers/>} /> */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         </AuthProvider>
 
