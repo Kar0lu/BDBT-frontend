@@ -5,9 +5,13 @@ import AuthContext from '../context/AuthContext';
 const UserRoute = ({children, ...rest}) => {
     let { user } = useContext(AuthContext)
 
-    alert('Ta strona wymaga zalogowania')
-
-    return user!='user' ? <Navigate to='/login'/> : children;
+    if (user!='user') {
+        alert('Ta strona wymaga zalogowania')
+        return <Navigate to='/login'/>
+    }
+    else {
+        return children
+    }
 }
 
 export default UserRoute;

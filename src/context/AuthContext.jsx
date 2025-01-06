@@ -13,9 +13,6 @@ export const AuthProvider = ({children}) => {
     let [userId, setUserId] = useState(() => (localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')).user_id : null))
     let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null))
 
-    // let [user, setUser] = useState(null)
-    // let [authTokens, setAuthTokens] = useState(null)
-    // let [userId, setUserId] = useState(null)
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
 
     const navigate = useNavigate()
@@ -64,12 +61,14 @@ export const AuthProvider = ({children}) => {
     }
 
     let logoutUser = (e) => {
-        localStorage.removeItem('authTokens')
-        setAuthTokens(null)
-        setUser(null)
-        setUserId(null)
-        navigate('/')
-    }
+        navigate('/');
+        setTimeout(() => {
+            localStorage.removeItem('authTokens');
+            setAuthTokens(null);
+            setUser(null);
+            setUserId(null);
+        }, 100);
+    };
 
     let contextData = {
         user: user,

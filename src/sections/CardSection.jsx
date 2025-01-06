@@ -8,7 +8,6 @@ import {
     CardActionArea,
 } from '@mui/material';
 
-import cardImage from '../assets/car.png';
 import CarModal from '../modals/CarModal';
 
 const CardSection = ({ cars }) => {
@@ -24,10 +23,6 @@ const CardSection = ({ cars }) => {
     const handleModalClose = () => {
         setModalOpen(false); // Close modal
     };
-
-    useEffect(() => {
-        console.log(cars)
-    }, [cars]);
 
     return (
         <Box>
