@@ -8,7 +8,7 @@ export default AuthContext;
 export const AuthProvider = ({children}) => {
 
     // TODO: reset after tests
-    let [user, setUser] = useState('admin')
+    let [user, setUser] = useState('')
     let [authTokens, setAuthTokens] = useState(null)
 
     const navigate = useNavigate()
@@ -19,7 +19,7 @@ export const AuthProvider = ({children}) => {
         localStorage.setItem('authTokens', 'JSON.stringify(data)');
         setAuthTokens('data')
         setUser('admin')
-        navigate('/saloons')
+        navigate('/adminsaloons')
         // const response = await fetch('http://127.0.0.1:8000/api/token/', {
         //     method: 'POST',
         //     headers: {

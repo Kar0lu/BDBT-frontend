@@ -15,6 +15,7 @@ import PrivateRoute from './utils/PrivateRoute';
 import Header from './sections/Header';
 import AdminReservations from './pages/AdminReservations';
 import AdminUsers from './pages/AdminUsers';
+import UserReservations from './pages/UserReservations';
 
 const theme = createTheme({
   palette: {
@@ -39,10 +40,11 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage/>} />
           <Route path="/login" element={<LoginPage/>} />
-          <Route path="/saloons" element={<PrivateRoute><AdminSaloons/></PrivateRoute>} />
-          <Route path="/cars" element={<AdminCars/>} />
-          <Route path="/reservations" element={<AdminReservations/>} /> 
-          <Route path="/users" element={<AdminUsers/>} />
+          <Route path="/adminsaloons" element={<PrivateRoute><AdminSaloons/></PrivateRoute>} />
+          <Route path="/admincars" element={<AdminCars/>} />
+          <Route path="/adminreservations" element={<AdminReservations/>} /> 
+          <Route path="/reservations" element={<UserReservations/>} />
+          <Route path="/adminusers" element={<AdminUsers/>} />
           {/* <Route path="/workers" element={<AdminWorkers/>} /> */}
         </Routes>
         </AuthProvider>

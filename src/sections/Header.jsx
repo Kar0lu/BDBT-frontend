@@ -34,16 +34,19 @@ const Header = () => {
             }}>
                 {user=='admin' ? (
                     <>
-                    <Link to={'/saloons'}><Button color="primary">Salony</Button></Link>
-                    <Link to={'/cars'}><Button color="primary">Samochody</Button></Link>
-                    <Link to={'/reservations'}><Button color="primary">Rezerwacje</Button></Link>
-                    <Link to={'/users'}><Button color="primary">Użytownicy</Button></Link>
+                    <Link to={'/adminsaloons'}><Button color="primary">Salony</Button></Link>
+                    <Link to={'/admincars'}><Button color="primary">Samochody</Button></Link>
+                    <Link to={'/adminreservations'}><Button color="primary">Rezerwacje</Button></Link>
+                    <Link to={'/adminusers'}><Button color="primary">Użytownicy</Button></Link>
                     <Link><Button color="primary" disabled>Pracownicy</Button></Link>
                     </>
                 ) : null}
+                {user!=null && user!='admin' ? (
+                    <Link to={'/reservations'}><Button color="primary">Rezerwacje</Button></Link>
+                ) : null}
                 <Link to={'/'}><Button color='primary'>Wirtualny Salon</Button></Link>
 
-                {user ? (<Button color="primary" onClick={logoutUser}>Wyloguj</Button>) : (<Link to={'/login'}><Button color="primary">Zaloguj</Button></Link>)}
+                {user!=null ? (<Button color="primary" onClick={logoutUser}>Wyloguj</Button>) : (<Link to={'/login'}><Button color="primary">Zaloguj</Button></Link>)}
             </Box>
         </Box>
     );
