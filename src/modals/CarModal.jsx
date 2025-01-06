@@ -47,12 +47,17 @@ const CarModal = ({ car, modalOpen, handleModalClose }) => {
                     }}
                 >
                     <img
-                        src={`http://localhost:8000/media/car_images/${car.brand}_${car.model}.png`}
+                        src={`http://localhost:8000/media/car_images/${car.brand}_${car.model}.jpg`}
                         alt="Car placeholder"
                         style={{
                             width: '100%',
                             borderRadius: '8px',
                             objectFit: 'cover'
+                        }}
+                        onError={(e) => {
+                            e.target.src =
+                                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwMB/eqWI2cAAAAASUVORK5CYII="; // Transparent 1x1 pixel
+                            e.target.style.background = "#f0f0f0"; // Optional background
                         }}
                     />
                     <Typography
@@ -95,7 +100,7 @@ const CarModal = ({ car, modalOpen, handleModalClose }) => {
                             >
                                 <li>Marka: {car.brand}</li>
                                 <li>Model: {car.model}</li>
-                                <li>Cena: {car.price}zł</li>
+                                <li>Cena: {parseInt(car.price, 10)}zł</li>
                                 <li>Salon: {car.saloon_name} ({car.saloon_city})</li>
                                 <li>Ilość egzemplarzy: {car.number_of_units}</li>
                                 <li>Dostępność: {car.availability ? "Dostępny" : "Niedostępny"}</li>

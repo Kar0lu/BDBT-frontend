@@ -45,8 +45,13 @@ const CardSection = ({ cars }) => {
                                 <CardMedia
                                     component="img"
                                     height="200"
-                                    image={`http://localhost:8000/media/car_images/${car.brand}_${car.model}.png`}
+                                    image={`http://localhost:8000/media/car_images/${car.brand}_${car.model}.jpg`}
                                     alt={`${car.brand} ${car.model}`}
+                                    onError={(e) => {
+                                        e.target.src =
+                                            "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/w8AAwMB/eqWI2cAAAAASUVORK5CYII="; // Transparent 1x1 pixel
+                                        e.target.style.background = "#f0f0f0"; // Optional background
+                                    }}
                                 />
                                 <CardContent>
                                     <Typography variant="h6">

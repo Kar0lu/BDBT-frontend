@@ -59,7 +59,7 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
                 return;
             }
 
-            setSnackbar({ open: true, message: 'Pomyślnie zaktualizowano dokonano rezerwacji!', severity: 'success' });
+            setSnackbar({ open: true, message: 'Pomyślnie dokonano rezerwacji!', severity: 'success' });
             handleClose();
         } catch (error) {
             setSnackbar({
