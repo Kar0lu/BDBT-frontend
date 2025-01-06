@@ -97,6 +97,10 @@ const SearchSection = ({ searchRef }) => {
             
     };
 
+    useEffect(() => {
+        handleSearchClick()
+    }, []);
+
     const handleSnackbarClose = (_, reason) => {
         if (reason === 'clickaway') return;
         setSnackbar({ ...snackbar, open: false });

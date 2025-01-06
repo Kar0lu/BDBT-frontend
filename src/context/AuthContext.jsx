@@ -17,10 +17,6 @@ export const AuthProvider = ({children}) => {
     // let [authTokens, setAuthTokens] = useState(null)
     // let [userId, setUserId] = useState(null)
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
-    
-    useEffect(() => {
-        console.log(user, userId)
-    }, [user, userId]);
 
     const navigate = useNavigate()
 

@@ -25,6 +25,10 @@ const CardSection = ({ cars }) => {
         setModalOpen(false); // Close modal
     };
 
+    useEffect(() => {
+        console.log(cars)
+    }, [cars]);
+
     return (
         <Box>
             <Box
@@ -41,7 +45,7 @@ const CardSection = ({ cars }) => {
                                 <CardMedia
                                     component="img"
                                     height="200"
-                                    image={cardImage}
+                                    image={`http://localhost:8000/media/car_images/${car.brand}_${car.model}.png`}
                                     alt={`${car.brand} ${car.model}`}
                                 />
                                 <CardContent>
@@ -49,7 +53,7 @@ const CardSection = ({ cars }) => {
                                         {car.brand} {car.model}
                                     </Typography>
                                     <Typography variant="body2">
-                                        Cena: {car.price}zł
+                                        Cena: {parseInt(car.price, 10)}zł
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>

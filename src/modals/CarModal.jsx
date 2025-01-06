@@ -7,7 +7,6 @@ import {
     Tooltip
 } from '@mui/material';
 import AuthContext from '../context/AuthContext';
-import cardImage from '../assets/car.png';
 import CreateReservationModal from './User/CreateReservationModal';
 
 const CarModal = ({ car, modalOpen, handleModalClose }) => {
@@ -17,10 +16,6 @@ const CarModal = ({ car, modalOpen, handleModalClose }) => {
     if (!car) {
         return null;
     }
-
-    useEffect(() => {
-        console.log(car)
-    }, [car]);
 
     const handleSecondModalOpen = () => {
         setSecondModalOpen(true)
@@ -52,7 +47,7 @@ const CarModal = ({ car, modalOpen, handleModalClose }) => {
                     }}
                 >
                     <img
-                        src={cardImage}
+                        src={`http://localhost:8000/media/car_images/${car.brand}_${car.model}.png`}
                         alt="Car placeholder"
                         style={{
                             width: '100%',
