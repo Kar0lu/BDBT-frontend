@@ -20,8 +20,18 @@ const EditSaloonModal = ({ open, setOpen, row, fetchDataGridData}) => {
     }, [open]);
     
     const handleSave = async () => {
-        if (!formValues || !formValues.id || !formValues.name || !formValues.owner) {
-            setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
+        if (!formValues.id) {
+            setSnackbar({ open: true, message: 'Wymagane id salonu', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.name) {
+            setSnackbar({ open: true, message: 'Wymagana nazwa salonu', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.owner) {
+            setSnackbar({ open: true, message: 'Wymagana nazwa właściciela salonu', severity: 'warning' });
             return;
         }
     

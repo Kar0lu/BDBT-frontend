@@ -54,7 +54,7 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button variant="contained" sx={{ mt: 2 }} fullWidth onClick={handleLogin}>
+        <Button variant="contained" sx={{ mt: 2 }} fullWidth onClick={handleLogin} type="submit">
           ZALOGUJ SIĘ
         </Button>
         <Tooltip title="Należy skontaktować się z administratorem">

@@ -36,8 +36,17 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
     }, [open]);
     
     const handleSave = async () => {
-        if (!formValues.date || !formValues.user || !formValues.car) {
-            setSnackbar({ open: true, message: 'Rezerwacja musi zawierać użytkownika, samochód oraz datę', severity: 'warning' });
+        if (!formValues.date) {
+            setSnackbar({ open: true, message: 'Rezerwacja musi zawierać użytkownika', severity: 'warning' });
+            return;
+        }
+        if (!formValues.user) {
+            setSnackbar({ open: true, message: 'Rezerwacja musi zawierać samochód', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.car) {
+            setSnackbar({ open: true, message: 'Rezerwacja musi zawierać datę', severity: 'warning' });
             return;
         }
     

@@ -42,8 +42,8 @@ const EditCarModal = ({ open, setOpen, row, fetchDataGridData}) => {
     }, [open]);
     
     const handleSave = async () => {
-        if (!formValues || !formValues.price || formValues.availability === null) {
-            setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
+        if (formValues.availability==null) {
+            setSnackbar({ open: true, message: 'Samochód musi być dostępny lub niedostępny', severity: 'warning' });
             return;
         }
     
@@ -103,7 +103,7 @@ const EditCarModal = ({ open, setOpen, row, fetchDataGridData}) => {
                 onSave={handleSave}
             >
                 {formValues ? (<>
-                    <TextField label="Cena" defaultValue={formValues.price} name='price' onChange={handleInputChange} />
+                    <TextField label="Cena" defaultValue={formValues.price} name='price' type="number" onChange={handleInputChange} />
                     <FormControlLabel
                         control={
                             <Switch

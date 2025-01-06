@@ -42,11 +42,17 @@ const AddCarModal = ({ open, setOpen, fetchDataGridData}) => {
     }, [open]);
 
     const handleSave = async () => {
-        if (formValues.brand == '' || formValues.model == '' || formValues.price == '') {
-            setSnackbar({ open: true, message: 'Samochód musi posiadać markę, model oraz cenę', severity: 'warning' });
+
+        if (!formValues.brand) {
+            setSnackbar({ open: true, message: 'Samochód musi mieć markę', severity: 'warning' });
             return;
         }
-    
+
+        if (!formValues.model) {
+            setSnackbar({ open: true, message: 'Samochód musi mieć model', severity: 'warning' });
+            return;
+        }
+
         try {
             const response = await fetch('http://127.0.0.1:8000/api/create/car', {
                 method: 'POST',
@@ -105,7 +111,7 @@ const AddCarModal = ({ open, setOpen, fetchDataGridData}) => {
                 {formValues ? (<>
                     <TextField label="Marka" defaultValue={formValues.brand} name='brand' onChange={handleInputChange} />
                     <TextField label="Model" defaultValue={formValues.model} name='model' onChange={handleInputChange} />
-                    <TextField label="Cena" defaultValue={formValues.price} name='price' onChange={handleInputChange} />
+                    <TextField label="Cena" defaultValue={formValues.price} name='price' onChange={handleInputChange} type="number"/>
                     <FormControlLabel
                         control={
                             <Switch

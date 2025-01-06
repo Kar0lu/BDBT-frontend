@@ -22,8 +22,33 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
     }, [open]);
 
     const handleSave = async () => {
-        if (formValues.name == '') {
-            setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
+        if (!formValues.name) {
+            setSnackbar({ open: true, message: 'Wymagane pole nazwy salonu', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.owner) {
+            setSnackbar({ open: true, message: 'Wymagane pole właściciela salonu', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.city) {
+            setSnackbar({ open: true, message: 'Wymagane pole miasta', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.building_number) {
+            setSnackbar({ open: true, message: 'Wymagany number budynku', severity: 'warning' });
+            return;
+        }
+
+        if (formValues.building_number.includes(".")) {
+            setSnackbar({ open: true, message: 'Numer budynku musi być liczbą całkowitą', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.street) {
+            setSnackbar({ open: true, message: 'Wymagana nazwa ulicy', severity: 'warning' });
             return;
         }
     
@@ -87,7 +112,7 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
                 <TextField label="Właściciel" defaultValue={formValues.owner} name='owner' onChange={handleInputChange} />
                 <TextField label="Miasto" defaultValue={formValues.city} name='city' onChange={handleInputChange} />
                 <TextField label="Ulica" defaultValue={formValues.street} name='street' onChange={handleInputChange} />
-                <TextField label="Numer budynku" defaultValue={formValues.building_number} name='building_number' onChange={handleInputChange} />
+                <TextField label="Numer budynku" type='number' defaultValue={formValues.building_number} name='building_number' onChange={handleInputChange} />
                 </>) : null}
             </GenericAdminModal>
             <Snackbar

@@ -26,21 +26,55 @@ const AddUserModal = ({ open, setOpen, fetchDataGridData}) => {
     }, [open]);
 
     const handleSave = async () => {
-        if ( 
-            formValues.first_name == '' ||
-            formValues.last_name == '' ||
-            formValues.username == '' ||
-            formValues.password == '' ||
-            formValues.email == '' ||
-            formValues.city == '' ||
-            formValues.street == '' ||
-            formValues.building_number == '' ||
-            formValues.is_staff == null
-        ) {
-            setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
+        if (!formValues.id) {
+            setSnackbar({ open: true, message: 'Wymagane id', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.username) {
+            setSnackbar({ open: true, message: 'Wymagana nazwa użytkownika', severity: 'warning' });
+            return;
+        }
+        if (!formValues.password) {
+            setSnackbar({ open: true, message: 'Wymagana hasło', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.first_name) {
+            setSnackbar({ open: true, message: 'Wymagane imie użytkownika', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.last_name) {
+            setSnackbar({ open: true, message: 'Wymagane nazwisko użytkownika', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.city) {
+            setSnackbar({ open: true, message: 'Wymagane miasto', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.street) {
+            setSnackbar({ open: true, message: 'Wymagana ulica', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.building_number) {
+            setSnackbar({ open: true, message: 'Wymagany numer budynku', severity: 'warning' });
+            return;
+        }
+
+        if (formValues.building_number.includes(".")) {
+            setSnackbar({ open: true, message: 'Numer budynku musi być liczbą całkowitą', severity: 'warning' });
             return;
         }
     
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValues.email)) {
+            setSnackbar({ open: true, message: 'Wymagany poprawny adres email', severity: 'warning' });
+            return;
+        }
+
         try {
             const response = await fetch('http://127.0.0.1:8000/api/create/user', {
                 method: 'POST',
@@ -119,12 +153,14 @@ const AddUserModal = ({ open, setOpen, fetchDataGridData}) => {
                         <TextField
                             label="Hasło"
                             defaultValue={formValues.password}
+                            type="password"
                             name="password"
                             onChange={handleInputChange}
                         />
                         <TextField
                             label="Email"
                             defaultValue={formValues.email}
+                            type="email"
                             name="email"
                             onChange={handleInputChange}
                         />
@@ -143,6 +179,7 @@ const AddUserModal = ({ open, setOpen, fetchDataGridData}) => {
                         <TextField
                             label="Numer budynku"
                             defaultValue={formValues.building_number}
+                            type="number"
                             name="building_number"
                             onChange={handleInputChange}
                         />

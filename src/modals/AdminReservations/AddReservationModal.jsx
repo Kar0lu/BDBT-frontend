@@ -23,10 +23,10 @@ const AddReservationModal = ({ open, setOpen, fetchDataGridData}) => {
     }, [open]);
 
     const handleSave = async () => {
-        // if (formValues.name == '') {
-        //     setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
-        //     return;
-        // }
+        if (!formValues.id) {
+            setSnackbar({ open: true, message: 'Rezerwacja musi mieć id', severity: 'warning' });
+            return;
+        }
     
         try {
             const response = await fetch('http://127.0.0.1:8000/api/create/reservation', {

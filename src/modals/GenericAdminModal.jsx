@@ -24,7 +24,7 @@ const GenericAdminModal = ({ open, onClose, title, children, onSave }) => {
                     {children}
                 </Box>
                 <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-                    <Button onClick={onSave} variant="contained">
+                    <Button onClick={onSave} variant="contained" type="submit">
                         Zapisz
                     </Button>
                     <Button onClick={onClose} variant="outlined">

@@ -27,10 +27,45 @@ const EditUserModal = ({ open, setOpen, row, fetchDataGridData}) => {
     }, [open]);
     
     const handleSave = async () => {
-        // if (!formValues || !formValues.id || !formValues.name || !formValues.owner) {
-        //     setSnackbar({ open: true, message: 'Wszystkie pola muszą być wypełnione', severity: 'warning' });
-        //     return;
-        // }
+        if (!formValues.id) {
+            setSnackbar({ open: true, message: 'Wymagane id', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.username) {
+            setSnackbar({ open: true, message: 'Wymagana nazwa użytkownika', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.first_name) {
+            setSnackbar({ open: true, message: 'Wymagane imie użytkownika', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.last_name) {
+            setSnackbar({ open: true, message: 'Wymagane nazwisko użytkownika', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.city) {
+            setSnackbar({ open: true, message: 'Wymagane miasto', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.street) {
+            setSnackbar({ open: true, message: 'Wymagana ulica', severity: 'warning' });
+            return;
+        }
+
+        if (!formValues.building_number) {
+            setSnackbar({ open: true, message: 'Wymagany numer budynku', severity: 'warning' });
+            return;
+        }
+
+        if (formValues.building_number.includes(".")) {
+            setSnackbar({ open: true, message: 'Numer budynku musi być liczbą całkowitą', severity: 'warning' });
+            return;
+        }
     
         try {
             const response = await fetch('http://127.0.0.1:8000/api/edit/user', {
@@ -110,12 +145,14 @@ const EditUserModal = ({ open, setOpen, row, fetchDataGridData}) => {
                         <TextField
                             label="Hasło"
                             defaultValue={formValues.password}
+                            type="password"
                             name="password"
                             onChange={handleInputChange}
                         />
                         <TextField
                             label="Email"
                             defaultValue={formValues.email}
+                            type="email"
                             name="email"
                             onChange={handleInputChange}
                         />
@@ -134,6 +171,7 @@ const EditUserModal = ({ open, setOpen, row, fetchDataGridData}) => {
                         <TextField
                             label="Numer budynku"
                             defaultValue={formValues.building_number}
+                            type="number"
                             name="building_number"
                             onChange={handleInputChange}
                         />
