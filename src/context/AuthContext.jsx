@@ -11,6 +11,8 @@ export const AuthProvider = ({children}) => {
 
     let [user, setUser] = useState(() => (localStorage.getItem('authTokens') ? (jwtDecode(localStorage.getItem('authTokens')).is_staff ? 'admin' : 'user') : null))
     let [userId, setUserId] = useState(() => (localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')).user_id : null))
+    let [username, setUsername] = useState(() => (localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')).username : null))
+
     let [authTokens, setAuthTokens] = useState(() => (localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null))
 
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
@@ -47,6 +49,7 @@ export const AuthProvider = ({children}) => {
             localStorage.setItem('authTokens', JSON.stringify(data));
             setAuthTokens(data)
             setUserId(jwtDecode(data.access).user_id)
+            setUsername(jwtDecode(data.access).username)
             if(jwtDecode(data.access).is_staff){
                 setUser('admin')
                 navigate('/admincars')
@@ -73,6 +76,7 @@ export const AuthProvider = ({children}) => {
     let contextData = {
         user: user,
         user_id: userId,
+        username: username,
         loginUser: loginUser,
         logoutUser: logoutUser,
     }

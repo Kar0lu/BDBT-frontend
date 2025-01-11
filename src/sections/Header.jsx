@@ -5,7 +5,7 @@ import logoImage from '../assets/logo_white.png';
 import { Box, Button } from '@mui/material';
 
 const Header = () => {
-    let { user, logoutUser } = useContext(AuthContext);
+    let { user, username, logoutUser } = useContext(AuthContext);
 
     return (
         <Box
@@ -64,7 +64,7 @@ const Header = () => {
                 </Link>
                 {user != null ? (
                     <Button color="primary" onClick={logoutUser}>
-                        Wyloguj
+                        Wyloguj ({user} {username})
                     </Button>
                 ) : (
                     <Link to={'/login'}>
