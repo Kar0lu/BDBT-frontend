@@ -26,10 +26,6 @@ const AddUserModal = ({ open, setOpen, fetchDataGridData}) => {
     }, [open]);
 
     const handleSave = async () => {
-        if (!formValues.id) {
-            setSnackbar({ open: true, message: 'Wymagane id', severity: 'warning' });
-            return;
-        }
 
         if (!formValues.username) {
             setSnackbar({ open: true, message: 'Wymagana nazwa użytkownika', severity: 'warning' });

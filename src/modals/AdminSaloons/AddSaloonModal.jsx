@@ -71,9 +71,10 @@ const AddSaloonModal = ({ open, setOpen, fetchDataGridData}) => {
             }
 
             setSnackbar({ open: true, message: 'Pomyślnie dodano nowy salon!', severity: 'success' });
-            fetchSaloons();
+            fetchDataGridData();
             handleClose();
         } catch (error) {
+            console.log(error)
             setSnackbar({
                 open: true,
                 message: 'Wystąpił nieznany błąd. Prosimy skontaktować się z administratorem.',

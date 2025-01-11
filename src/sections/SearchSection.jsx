@@ -152,6 +152,7 @@ const SearchSection = ({ searchRef }) => {
                     label="Cena od"
                     variant="outlined"
                     fullWidth
+                    type="number"
                     name="priceFrom"
                     value={formValues.priceFrom}
                     onChange={handleInputChange}
@@ -163,6 +164,7 @@ const SearchSection = ({ searchRef }) => {
                     label="Cena do"
                     variant="outlined"
                     fullWidth
+                    type="number"
                     name="priceTo"
                     value={formValues.priceTo}
                     onChange={handleInputChange}
