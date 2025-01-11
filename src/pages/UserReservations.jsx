@@ -72,8 +72,39 @@ const UserReservations = () => {
             });
     }
 
+    const fetchReservationsInfo = () => {
+        setLoading(true);
+        fetch('http://127.0.0.1:8000/api/user/get/info', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_id: user_id}),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if(data.reservation_deleted){
+                    setSnackbar({
+                        open: true,
+                        message: 'Administrator usunął twoją rezerwację',
+                        severity: 'warning',
+                    });
+                }
+                setLoading(false);
+            })
+            .catch((error) => {
+                setSnackbar({
+                    open: true,
+                    message: 'Wystąpił nieznany błąd przy ładowaniu danych. Prosimy skontaktować się z administratorem.',
+                    severity: 'error',
+                });
+                setLoading(false);
+            });
+    }
+
     useEffect(() => {
         fetchDataGridData();
+        fetchReservationsInfo();
     }, []);
 
     const handleRemoveSelectedButton = async () => {  

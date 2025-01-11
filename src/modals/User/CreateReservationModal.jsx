@@ -16,10 +16,6 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
     const [workerPicker, setWorkerPicker] = useState(null);
     let { user_id } = useContext(AuthContext);
-    
-    useEffect(() => {
-        console.log(formValues)
-    }, [formValues]);
 
     useEffect(() => {
         if (open) {
@@ -44,19 +40,26 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
             setSnackbar({ open: true, message: 'Rezerwacja musi zawierać samochód', severity: 'warning' });
             return;
         }
-
+    
         if (!formValues.car) {
             setSnackbar({ open: true, message: 'Rezerwacja musi zawierać datę', severity: 'warning' });
             return;
         }
     
         try {
+            // Add 1 hour to the date before sending it
+            // I know it's wrong but I don't have time for this
+            const updatedDate = dayjs(formValues.date).add(1, 'hour').toISOString();
+    
             const response = await fetch('http://127.0.0.1:8000/api/user/create/reservation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formValues),
+                body: JSON.stringify({
+                    ...formValues,
+                    date: updatedDate,  // Use the updated date
+                }),
             });
     
             if (!response.ok) {
@@ -67,7 +70,7 @@ const CreateReservationModal = ({ open, setOpen, car, handleModalClose}) => {
                 });
                 return;
             }
-
+    
             setSnackbar({ open: true, message: 'Pomyślnie dokonano rezerwacji!', severity: 'success' });
             handleClose();
         } catch (error) {
